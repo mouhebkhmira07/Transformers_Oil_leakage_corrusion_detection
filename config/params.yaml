@@ -1,0 +1,14 @@
+base:
+  project: smart-farming
+  random_state: 42
+
+data:
+  raw_data_path: data/raw/Smart_Farming_Crop_Yield_2024.csv
+  cleaned_data_path: data/processed/cleaned.csv
+  features_path: data/processed/features.csv
+  test_size: 0.2
+
+model:
+  name: random_forest
+  n_estimators: 100
+  max_depth: 10

@@ -1,0 +1,22 @@
+schema: '2.0'
+stages:
+  run_pipeline:
+    cmd: python src/pipeline.py
+    deps:
+    - path: data/raw/Smart_Farming_Crop_Yield_2024.csv
+      hash: md5
+      md5: 66e30530a2a58c8803287c43da103b3d
+      size: 83584
+    - path: src/pipeline.py
+      hash: md5
+      md5: 5aa050dec7d9bb91a96f27724ae5a3e6
+      size: 3653
+    outs:
+    - path: data/processed/cleaned.csv
+      hash: md5
+      md5: cb77622d8bec9cb14a75f4118287f272
+      size: 84473
+    - path: data/processed/features.csv
+      hash: md5
+      md5: 135e363633a8df005c96e164fdc34d86
+      size: 190955
