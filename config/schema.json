@@ -1,0 +1,17 @@
+{
+  "columns": [
+    {
+      "name": "feature1",
+      "type": "float"
+    },
+    {
+      "name": "feature2",
+      "type": "float"
+    },
+    {
+      "name": "target",
+      "type": "int"
+    }
+  ],
+  "target_column": "target"
+}

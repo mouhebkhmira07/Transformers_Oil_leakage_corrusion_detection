@@ -1,0 +1,9 @@
+stages:
+  run_pipeline:
+    cmd: python src/pipeline.py
+    deps:
+      - src/pipeline.py
+      - data/raw/Smart_Farming_Crop_Yield_2024.csv
+    outs:
+      - data/processed/cleaned.csv
+      - data/processed/features.csv
