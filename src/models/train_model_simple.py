@@ -67,9 +67,9 @@ def train_crop_recommender(train_df, output_dir):
     """
     log_msg("--- Training Crop Recommender Tournament ---")
     
-    # Define target and features (UPPERCASE N, P, K to match processed data)
+    # Define target and features (lowercase to match processed data)
     target = 'label'
-    features = ['N', 'P', 'K', 'temperature', 'humidity', 'ph', 'rainfall']
+    features = ['n', 'p', 'k', 'temperature', 'humidity', 'ph', 'rainfall']
     
     # Validate that columns exist
     if target not in train_df.columns:
@@ -128,7 +128,7 @@ def train_crop_recommender(train_df, output_dir):
 
     # Save the champion as the default model
     if best_model_obj:
-        log_msg(f"CHAMPION: {best_name} (Accuracy: {best_score:.4f})")
+        log_msg(f"🏆 CHAMPION: {best_name} (Accuracy: {best_score:.4f})")
         joblib.dump(best_model_obj, output_dir / "crop_recommender.pkl")
         log_msg("Saved champion as crop_recommender.pkl")
     else:

@@ -15,3 +15,12 @@ pytest
 black
 mypy
 
+PyYAML
+pandas
+numpy
+scikit-learn
+dvc
+
+
+fastapi
+uvicorn

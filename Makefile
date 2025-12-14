@@ -27,7 +27,7 @@ requirements: test_environment
 
 ## Make Dataset
 data: requirements
-	$(PYTHON_INTERPRETER) src/data/make_dataset.py data/raw data/processed
+	$(PYTHON_INTERPRETER) src/data/make_dataset.py data/raw/Smart_Farming_Crop_Yield_2024.csv data/processed/cleaned.csv
 
 ## Delete all compiled Python files
 clean:

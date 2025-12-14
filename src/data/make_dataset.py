@@ -8,7 +8,6 @@ from matplotlib import pyplot as plt
 
 
 
-
 def snapshot(df: pd.DataFrame, step_name: str) -> None:
     """Print dataset snapshot to monitor changes."""
     print(f"\n--- {step_name} ---")
@@ -75,6 +74,10 @@ def clean_data(df: pd.DataFrame) -> pd.DataFrame:
         df[col] = df[col].clip(lower=lower, upper=upper)
     snapshot(df, "After outlier smoothing")
 
+    # Fill missing disease status with 'Healthy' (assumption: no disease reported = healthy)
+    if 'crop_disease_status' in df.columns:
+        df['crop_disease_status'] = df['crop_disease_status'].fillna('Healthy')
+
     df = df.reset_index(drop=True)
     snapshot(df, "Final dataset after cleaning")
 
@@ -105,7 +108,3 @@ if __name__ == "__main__":
     load_dotenv(find_dotenv())
 
     main()
-
-
-
-
