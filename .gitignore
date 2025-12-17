@@ -90,4 +90,38 @@ target/
 
 # Mypy cache
 .mypy_cache/
+
+# MLflow artifacts
 mlruns/
+
+# Virtual environments
+.venv/
+venv/
+
+# DVC cache
+.dvc/cache/
+
+# Egg info
+src.egg-info/
+*.egg-info/
+
+# Jupyter Notebook outputs
+*.ipynb_checkpoints
+
+# OS specific
+Thumbs.db
+
+# IDE
+*.swp
+*.swo
+*~
+
+# Model artifacts (keep .dvc files only)
+models/*.pkl
+models/*.h5
+models/*.pt
+models/*.pth
+!models/*.dvc
+
+# Large dataset folders (specific to this project)
+data/Infected Date Palm Leaves Dataset/

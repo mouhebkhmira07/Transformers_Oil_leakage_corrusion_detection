@@ -1,4 +1,12 @@
 stages:
+  organize_palm_data:
+    cmd: python src/data/organise_data.py
+    deps:
+      - src/data/organise_data.py
+      - data/Infected Date Palm Leaves Dataset/Processed
+    outs:
+      - data/processed/palm_disease_final
+
   run_pipeline:
     cmd: python src/pipeline.py
     deps:
