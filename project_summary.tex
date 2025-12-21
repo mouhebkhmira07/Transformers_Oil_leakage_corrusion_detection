@@ -1,0 +1,50 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{xcolor}
+
+\title{MLOps Project: Oil Leakage and Corrosion Detection System}
+\author{Hackathon Submission}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+The \textbf{Oil Leakage and Corrosion Detection System} is an end-to-end MLOps solution designed for automated infrastructure monitoring. Leveraging state-of-the-art computer vision and a scalable producer-consumer architecture, the system identifies critical maintenance issues such as surface corrosion and oil leaks in real-time.
+
+\section{Project Objectives}
+\begin{itemize}
+    \item \textbf{Object Detection}: Implementing YOLOv8 to localize and classify structural defects.
+    \item \textbf{Scalability}: Utilizing Kafka as a message broker to separate API requests from intensive GPU/CPU inference.
+    \item \textbf{Reproducibility}: Using DVC (Data Version Control) to manage datasets and training pipelines.
+    \item \textbf{Sustainability}: Tracking the carbon footprint of model training via CodeCarbon.
+\end{itemize}
+
+\section{Technical Architecture}
+The system is built on a modular microservices architecture:
+\begin{enumerate}
+    \item \textbf{FastAPI Producer}: Handles image uploads, saves raw data, and publishes tasks to the \texttt{oil-detection-requests} topic.
+    \item \textbf{Apache Kafka}: Orchestrates asynchronous communication between services.
+    \item \textbf{Inference Worker}: Consumes tasks, performs YOLOv8 detection, saves annotated proofs, and implements Active Learning logic.
+    \item \textbf{Static Media Server}: Serves annotated images for immediate visual verification.
+\end{enumerate}
+
+\section{Key Features}
+\subsection{Active Learning Pipeline}
+To optimize model improvement, the system implements an \textit{Uncertainty Queue}. Images with detection confidence scores between 0.25 and 0.55 are automatically flagged and saved to \texttt{data/active\_learning\_queue/} for prioritized manual annotation.
+
+\subsection{Visual Verification}
+Every successful detection generates a corresponding annotated image with bounding boxes and confidence labels, accessible via a unique URL (e.g., \texttt{/outputs/annotated\_\{id\}.jpg}).
+
+\subsection{Green MLOps}
+Integration with \textbf{CodeCarbon} ensures that every training run logs its CO$_2$ emissions in \texttt{emissions.csv}, promoting sustainable AI development practices.
+
+\section{Conclusion}
+This project demonstrates a robust, production-ready DLOps pipeline that bridges the gap between research-grade models and enterprise-level deployment, providing actionable insights for infrastructure maintenance.
+
+\end{document}

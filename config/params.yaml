@@ -11,7 +11,7 @@ data:
 
 model:
   name: yolov8n-cls
-  epochs: 20
+  epochs: 5
   imgsz: 224
   batch: 16
   project: oil_detection_project
