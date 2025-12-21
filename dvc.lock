@@ -20,3 +20,73 @@ stages:
       hash: md5
       md5: 135e363633a8df005c96e164fdc34d86
       size: 190955
+  organize_palm_data:
+    cmd: python src/data/organise_data.py
+    deps:
+    - path: data/Infected Date Palm Leaves Dataset/Processed
+      hash: md5
+      md5: 49663c7463d864997ecaaa75526ddd4f.dir
+      size: 208091359
+      nfiles: 3089
+    - path: src/data/organise_data.py
+      hash: md5
+      md5: abe16bb37072b1277abdd7e442abc5f2
+      size: 5891
+      isexec: true
+    outs:
+    - path: data/processed/palm_disease_final
+      hash: md5
+      md5: bb9a1eacf3be7e5ca8db05f1e2245cab.dir
+      size: 208091359
+      nfiles: 3089
+  download_data:
+    cmd: .\.venv_win\Scripts\python src/data/download_data.py
+    deps:
+    - path: src/data/download_data.py
+      hash: md5
+      md5: 6d9a378c72622b5933fea9c77e4210c7
+      size: 3465
+    outs:
+    - path: data/raw/oil_leakage_corrosion
+      hash: md5
+      md5: 5b7a5ebdfb583043e19d2678da1f4696.dir
+      size: 85931197
+      nfiles: 1383
+  prepare_data:
+    cmd: .\.venv_win\Scripts\python src/data/prepare_data.py
+    deps:
+    - path: data/raw/oil_leakage_corrosion
+      hash: md5
+      md5: 6ac4169585f8928b2db39377727900c9.dir
+      size: 85931303
+      nfiles: 1383
+    - path: src/data/prepare_data.py
+      hash: md5
+      md5: 03c19817a03e162f61e793fabc297d9d
+      size: 1802
+    outs:
+    - path: data/prepared.lock
+      hash: md5
+      md5: d41d8cd98f00b204e9800998ecf8427e
+      size: 0
+  train_detector:
+    cmd: .\.venv_win\Scripts\python src/vision/train_detector.py
+    deps:
+    - path: data/prepared.lock
+      hash: md5
+      md5: d41d8cd98f00b204e9800998ecf8427e
+      size: 0
+    - path: src/vision/train_detector.py
+      hash: md5
+      md5: 6b1b6835fe8b415380ad803993bdaa1e
+      size: 5277
+    outs:
+    - path: models/oil_leakage_yolo.pt
+      hash: md5
+      md5: 5b6480b27450381df649e58a4f435a4e
+      size: 6198250
+    - path: oil_project/oil_detector_experiment
+      hash: md5
+      md5: f396c22c87b2c6ca68ad93d346e13e59.dir
+      size: 16266881
+      nfiles: 24

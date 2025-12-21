@@ -125,3 +125,9 @@ models/*.pth
 
 # Large dataset folders (specific to this project)
 data/Infected Date Palm Leaves Dataset/
+
+# YOLO/Ultralytics training artifacts
+palm_project/
+runs/
+yolov8*.pt
+!*.dvc
