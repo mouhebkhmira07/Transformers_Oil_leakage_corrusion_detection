@@ -1,33 +1,32 @@
-name: MLOps Pipeline
+name: Oil Leakage & Corrosion DLOps Pipeline
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, dev ]
   pull_request:
-    branches: [ main ]
+    branches: [ main, dev ]
 
 jobs:
-  build-and-run:
+  build-and-train:
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
 
-    - name: Set up Python 3.9
+    - name: Set up Python 3.10
       uses: actions/setup-python@v4
       with:
-        python-version: 3.9
+        python-version: "3.10"
 
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
+        pip install dvc
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-        pip install pyyaml
 
-    - name: Organize Palm Disease Data
+    - name: Run DVC Pipeline
       run: |
-        python src/data/organise_data.py
+        dvc repro
 
-    - name: Run Pipeline
-      run: |
-        python src/pipeline.py --config config
