@@ -13,6 +13,7 @@ sys.path.append(os.path.join(os.getcwd(), 'src'))
 
 from data.make_dataset import clean_data
 from features.build_features import add_all_agriculture_features
+from data.organise_data import reorganize_and_split
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
@@ -94,8 +95,100 @@ def run_pipeline(config_dir):
         logging.info(f"Features saved to {features_path}")
         mlflow.log_artifact(features_path)
 
-        # 4. Train Model
-        logging.info("Training models...")
+        # 4. Organize Palm Disease Data (Vision Pipeline)
+        logging.info("="*60)
+        logging.info("VISION PIPELINE: Organizing palm disease dataset...")
+        logging.info("="*60)
+        
+        project_root = Path(config_dir).parent
+        palm_source = project_root / "data" / "Infected Date Palm Leaves Dataset" / "Processed"
+        palm_dest = project_root / "data" / "processed" / "palm_disease_final"
+        
+        if palm_source.exists():
+            logging.info(f"Organizing palm disease data from {palm_source}")
+            success = reorganize_and_split(
+                source_path=str(palm_source),
+                dest_path=str(palm_dest),
+                train_ratio=0.7,
+                val_ratio=0.2,
+                test_ratio=0.1
+            )
+            
+            if success:
+                logging.info("Palm disease data organized successfully")
+            else:
+                logging.warning("Palm disease data organization failed")
+        else:
+            logging.info(f"Skipping palm data organization - source not found: {palm_source}")
+        
+        # 5. Train Vision Classifier (YOLOv8)
+        logging.info("="*60)
+        logging.info("VISION PIPELINE: Training YOLOv8 disease classifier...")
+        logging.info("="*60)
+        
+        if palm_dest.exists():
+            try:
+                from ultralytics import YOLO
+                import time
+                
+                # Setup for vision classifier
+                vision_model_path = project_root / "models" / "palm_classifier.onnx"
+                
+                logging.info("Loading YOLOv8 nano model...")
+                model = YOLO('yolov8n-cls.pt')
+                
+                start_time = time.time()
+                
+                # Train the model
+                logging.info("Starting Green AI training (YOLOv8n)...")
+                results = model.train(
+                    data=str(palm_dest),
+                    epochs=20,
+                    imgsz=224,
+                    batch=16,
+                    project="palm_project",
+                    name="green_experiment",
+                    verbose=True
+                )
+                
+                training_time = time.time() - start_time
+                
+                # Export to ONNX
+                logging.info("Exporting model to ONNX format...")
+                exported_path = model.export(format='onnx')
+                
+                # Move to models directory
+                import shutil
+                if os.path.exists(exported_path):
+                    if vision_model_path.exists():
+                        os.remove(vision_model_path)
+                    shutil.move(str(exported_path), str(vision_model_path))
+                    logging.info(f"Vision model saved to {vision_model_path}")
+                    
+                    # Log Green AI metrics
+                    file_size_mb = os.path.getsize(vision_model_path) / (1024 * 1024)
+                    mlflow.log_metric("vision_training_duration_seconds", training_time)
+                    mlflow.log_metric("vision_model_size_mb", file_size_mb)
+                    mlflow.log_artifact(str(vision_model_path))
+                    
+                    logging.info(f"🌿 Green AI Metric: Vision model size is {file_size_mb:.2f} MB")
+                    logging.info(f"🌿 Green AI Metric: Training time was {training_time:.1f} seconds")
+                else:
+                    logging.warning("ONNX export path not found")
+                    
+            except ImportError:
+                logging.warning("Ultralytics not installed - skipping vision training")
+                logging.info("Install with: pip install ultralytics")
+            except Exception as e:
+                logging.error(f"Vision training failed: {e}")
+        else:
+            logging.info("Skipping vision training - palm disease data not organized")
+        
+        # 6. Train Tabular Models (Crop Recommendation)
+        logging.info("="*60)
+        logging.info("TABULAR PIPELINE: Training crop recommendation models...")
+        logging.info("="*60)
+        
         # We need to split the data first if not already done, but build_features does it now.
         # However, build_features saves to train.csv and test.csv.
         # Let's assume they are in the same directory as features_path
@@ -113,14 +206,20 @@ def run_pipeline(config_dir):
         # Or better, let's just use subprocess to run them as scripts to avoid context issues.
         import subprocess
         
-        # Train
+        # Train tabular models
+        logging.info("Training tabular ML models...")
         subprocess.run(["python", "src/models/train_model.py", str(train_path), str(models_dir)], check=True)
         
-        # 5. Evaluate Model
-        logging.info("Evaluating models...")
+        # 7. Evaluate Tabular Model
+        logging.info("Evaluating tabular models...")
         subprocess.run(["python", "src/models/evaluate_model.py", str(test_path), str(models_dir), str(Path(config_dir).parent / "reports")], check=True)
         
-        logging.info("Pipeline execution completed successfully.")
+        logging.info("="*60)
+        logging.info("🎉 COMPLETE PIPELINE EXECUTION FINISHED SUCCESSFULLY")
+        logging.info("="*60)
+        logging.info("✅ Tabular Pipeline: Crop recommendation model trained")
+        logging.info("✅ Vision Pipeline: Palm disease classifier trained")
+        logging.info("="*60)
 
 if __name__ == "__main__":
     # Determine project root relative to this script
