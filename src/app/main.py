@@ -1,5 +1,5 @@
-# app/main.py - Oil Leakage and Corrosion Detection API (Producer)
 from fastapi import FastAPI, HTTPException, File, UploadFile, BackgroundTasks
+from fastapi.responses import JSONResponse, FileResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
@@ -90,9 +90,13 @@ app = FastAPI(
     description="Upload infrastructure images - API publishes to Kafka, worker processes for leakage and corrosion"
 )
 
-# VISUALIZER: Mount shared results to serve annotated images
-# Maps http://localhost:8000/outputs/... to data/shared_results/...
+# Static files and Visualizer
+app.mount("/static", StaticFiles(directory="src/app/static"), name="static")
 app.mount("/outputs", StaticFiles(directory="data/shared_results"), name="outputs")
+
+@app.get("/", include_in_schema=False)
+async def serve_frontend():
+    return FileResponse("src/app/static/index.html")
 
 class DetectionRequest(BaseModel):
     """Response model for detection request"""
@@ -258,28 +262,7 @@ async def list_issues():
         "issues": issue_info
     }
 
-@app.get("/")
-def root():
-    """API status and information"""
-    return {
-        "status": "ok", 
-        "message": "Oil Leakage and Corrosion Detection API (Producer-Consumer)",
-        "version": "3.0.0",
-        "architecture": {
-            "api": "Receives images and publishes to Kafka",
-            "worker": "Consumes from Kafka and processes images using YOLO",
-            "pattern": "Async request-response via message queue"
-        },
-        "endpoints": {
-            "detect": "POST /detect - Upload image (returns request_id)",
-            "result": "GET /result/{request_id} - Get processing result",
-            "issues": "GET /issues - List all detectable issues",
-            "health": "GET /health - Health check",
-            "docs": "GET /docs - API documentation"
-        },
-        "kafka_producer_status": "connected" if kafka_producer else "disconnected",
-        "kafka_consumer_status": "connected" if kafka_consumer else "disconnected"
-    }
+# Note: Root route moved to serve_frontend to serve the UI
 
 @app.get("/health")
 def health():

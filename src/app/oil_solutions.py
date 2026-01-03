@@ -1,7 +1,4 @@
-"""
-Oil Leakage and Corrosion Solutions Database
-Maps detected issues to mitigation recommendations
-"""
+
 
 OIL_DETECTION_SOLUTIONS = {
     "healthy": {

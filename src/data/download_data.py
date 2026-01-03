@@ -79,8 +79,7 @@ def download_data_direct():
                         f.write(z.read(file_info))
             
         logging.info(f"✅ Extracted to {raw_data_path}")
-        
-        # Verify
+       
         logging.info(f"📂 Contents of {raw_data_path}:")
         for item in raw_data_path.iterdir():
             logging.info(f"  - {item.name}")
