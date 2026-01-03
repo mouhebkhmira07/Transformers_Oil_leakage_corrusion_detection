@@ -1,7 +1,7 @@
-# local package
--e .
-
-# external requirements
+torch
+torchvision
+torchaudio
+ultralytics
 click
 Sphinx
 coverage
@@ -14,4 +14,31 @@ pre-commit
 pytest
 black
 mypy
+
+PyYAML
+pandas
+numpy
+scikit-learn
+dvc
+
+# Vision/Deep Learning
+onnx
+onnxruntime
+roboflow
+
+# API
+fastapi
+uvicorn
+python-multipart  # Required for file uploads
+aiofiles  # Async file operations
+
+# Image Processing
+Pillow
+
+# Kafka
+kafka-python==2.0.2
+aiokafka==0.8.1
+
+# Monitoring
+codecarbon
 

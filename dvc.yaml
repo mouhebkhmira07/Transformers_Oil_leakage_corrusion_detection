@@ -1,9 +1,24 @@
 stages:
-  run_pipeline:
-    cmd: python src/pipeline.py
+  download_data:
+    cmd: python src/data/download_data.py
     deps:
-      - src/pipeline.py
-      - data/raw/Smart_Farming_Crop_Yield_2024.csv
+      - src/data/download_data.py
     outs:
-      - data/processed/cleaned.csv
-      - data/processed/features.csv
+      - data/raw/oil_leakage_corrosion
+
+  prepare_data:
+    cmd: python src/data/prepare_data.py
+    deps:
+      - src/data/prepare_data.py
+      - data/raw/oil_leakage_corrosion
+    outs:
+      - data/prepared.lock
+
+  train_detector:
+    cmd: python src/vision/train_detector.py
+    deps:
+      - src/vision/train_detector.py
+      - data/prepared.lock
+    outs:
+      - models/oil_leakage_yolo.pt
+      - oil_project/oil_detector_experiment

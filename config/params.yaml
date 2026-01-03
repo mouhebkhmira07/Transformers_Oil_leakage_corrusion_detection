@@ -1,14 +1,19 @@
 base:
-  project: smart-farming
+  project: oil-leakage-corrosion-detection
   random_state: 42
 
 data:
-  raw_data_path: data/raw/Smart_Farming_Crop_Yield_2024.csv
-  cleaned_data_path: data/processed/cleaned.csv
-  features_path: data/processed/features.csv
-  test_size: 0.2
+  raw_data_path: data/raw/oil_leakage_corrosion
+  processed_data_path: data/processed/oil_detection
+  train_ratio: 0.7
+  val_ratio: 0.2
+  test_ratio: 0.1
 
 model:
-  name: random_forest
-  n_estimators: 100
-  max_depth: 10
+  name: yolov8n-cls
+  epochs: 5
+  imgsz: 224
+  batch: 16
+  project: oil_detection_project
+  name: green_experiment
+  save_path: models/oil_leakage_yolo.pt

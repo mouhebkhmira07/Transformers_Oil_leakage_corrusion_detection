@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oil Detection AI | Industrial Vision Dashboard</title>
+    <meta name="description" content="AI-powered oil leakage and corrosion detection system for industrial infrastructure.">
+    <link rel="stylesheet" href="/static/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="glass-background"></div>
+    
+    <main class="dashboard">
+        <header class="dashboard-header">
+            <div class="logo">
+                <span class="logo-icon">🔍</span>
+                <div class="logo-text">
+                    <h1>Oil Detection <span>AI</span></h1>
+                    <p>Infrastructure Integrity Monitor</p>
+                </div>
+            </div>
+            <div class="system-status">
+                <div class="status-indicator online"></div>
+                <span>System Online</span>
+            </div>
+        </header>
+
+        <div class="dashboard-grid">
+            <!-- Left Panel: Upload and Control -->
+            <section class="panel control-panel">
+                <div class="panel-header">
+                    <h2>Image Analysis</h2>
+                    <p>Upload infrastructure images for real-time detection</p>
+                </div>
+                
+                <div id="dropZone" class="upload-zone">
+                    <input type="file" id="fileInput" accept="image/*" hidden>
+                    <div class="upload-content">
+                        <div class="upload-icon">📤</div>
+                        <p>Drag & drop or <span class="highlight">browse</span></p>
+                        <span class="format-info">Supports JPG, PNG, WEBP</span>
+                    </div>
+                </div>
+
+                <div id="previewContainer" class="preview-container hidden">
+                    <img id="imagePreview" src="" alt="Preview">
+                    <button id="analyzeBtn" class="btn primary-btn">Start Analysis</button>
+                    <button id="resetBtn" class="btn secondary-btn">Cancel</button>
+                </div>
+
+                <div class="active-tasks">
+                    <h3>Recent Analysis</h3>
+                    <div id="taskList" class="task-list">
+                        <!-- Tasks will appear here -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Right Panel: Results -->
+            <section class="panel results-panel">
+                <div class="panel-header">
+                    <h2>Detection Results</h2>
+                    <div id="currentStatus" class="status-badge hidden">Processing...</div>
+                </div>
+
+                <div id="welcomeMessage" class="empty-state">
+                    <div class="empty-icon">🏗️</div>
+                    <p>Upload an image to start detection for oil leakage and corrosion.</p>
+                </div>
+
+                <div id="resultsContent" class="results-content hidden">
+                    <div class="result-image-wrapper">
+                        <img id="resultImage" src="" alt="Detection Result">
+                        <div class="image-overlay">Annotated Output</div>
+                    </div>
+
+                    <div class="result-details">
+                        <div class="stats-row">
+                            <div class="stat-card">
+                                <span class="stat-label">Issues Detected</span>
+                                <span id="issueCount" class="stat-value">0</span>
+                            </div>
+                            <div id="severityCard" class="stat-card">
+                                <span class="stat-label">Max Severity</span>
+                                <span id="maxSeverity" class="stat-value">-</span>
+                            </div>
+                        </div>
+
+                        <div id="detectedIssuesList" class="issue-cards">
+                            <!-- Issue cards will appear here -->
+                        </div>
+                        
+                        <div id="recommendations" class="recommendations">
+                            <h3>Maintenance Recommendations</h3>
+                            <div id="solutionsList" class="solutions-list">
+                                <!-- Solutions will appear here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="dashboard-footer">
+        <p>&copy; 2026 Industrial Vision Systems. All rights reserved.</p>
+    </footer>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>

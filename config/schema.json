@@ -1,17 +1,14 @@
 {
-  "columns": [
-    {
-      "name": "feature1",
-      "type": "float"
-    },
-    {
-      "name": "feature2",
-      "type": "float"
-    },
-    {
-      "name": "target",
-      "type": "int"
-    }
+  "classes": [
+    "healthy",
+    "corrosion",
+    "oil_leakage"
   ],
-  "target_column": "target"
+  "model_type": "classification",
+  "framework": "ultralytics",
+  "input_shape": [
+    224,
+    224,
+    3
+  ]
 }
